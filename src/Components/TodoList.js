@@ -4,12 +4,14 @@ import TodoItem from './TodoItem'
 export default class TodoList extends Component {
     render() {
         const { items, clearList, handleDeleteItem, handleEdit } = this.props
+        const listItems = JSON.parse(localStorage.getItem('lists'))
+        // console.log(listItems);
         return (
             <div className="col-10 col-md-8 offset-md-1 mx-auto text-center">
                 <div className="list-group my-4">
                     <h2>ToDo List</h2>
                     {
-                        items.map(item => {
+                        listItems.map(item => {
                             return (
                                 <TodoItem
                                     handleDeleteItem={() => handleDeleteItem(item.id)}

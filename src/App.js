@@ -4,6 +4,7 @@ import './App.css';
 import TodoInput from './Components/TodoInput';
 import TodoList from './Components/TodoList';
 import uuid from 'uuid/v4'
+import { confirmAlert } from 'react-confirm-alert';
 
 class App extends Component {
   constructor() {
@@ -28,33 +29,62 @@ class App extends Component {
       id: this.state.id
     }
 
-    const updateItems = [...this.state.items, newItem]
+    if (localStorage.getItem('lists') == null) {
+      const lists = []
+      lists.push(...this.state.items, newItem)
+      localStorage.setItem('lists', JSON.stringify(lists))
+    } else {
+      const lists = JSON.parse(localStorage.getItem('lists'))
+      lists.push(newItem)
+      localStorage.setItem('lists', JSON.stringify(lists))
+    }
+
     this.setState({
       item: '',
       id: uuid(),
-      items: updateItems,
+      items: JSON.parse(localStorage.getItem('lists')),
       editItem: false
     })
-  }
-  clearList = () => {
-    this.setState({
-      items: []
-    })
+    
   }
   handleDeleteItem = (id) => {
-    const filterItems = this.state.items.filter(item => item.id !== id)
-    this.setState({
-      items: filterItems
-    })
+    const allItems = JSON.parse(localStorage.getItem('lists'))
+    const filterItems = allItems.filter(item => item.id !== id)
+    let result = window.confirm('Are you sure?')
+    if (result) {
+      this.setState({
+        items: filterItems
+      })
+    } else {
+      return false
+    }
+    localStorage.setItem('lists', JSON.stringify(filterItems))
   }
   handleEdit = id => {
-    const filterItems = this.state.items.filter(item => item.id !== id)
-    const selectedItem = this.state.items.find(item => item.id === id)
+    const allItems = JSON.parse(localStorage.getItem('lists'))
+    const filterItems = allItems.filter(item => item.id !== id)
+    const selectedItem = allItems.find(item => item.id === id)
     this.setState({
       items: filterItems,
       item: selectedItem.title,
       editItem: true
     })
+    localStorage.setItem('lists', JSON.stringify(filterItems))
+  }
+  removeDatabase = () => {
+    localStorage.clear()
+    return localStorage.setItem('lists', JSON.stringify([]))
+  }
+  clearList = () => {
+    let result = window.confirm('Are you sure?')
+    if (result) {
+      this.setState({
+        items: []
+      })
+      this.removeDatabase()
+    } else {
+      return false
+    }
   }
   render() {
     return (
