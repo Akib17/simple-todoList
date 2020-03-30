@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 
 export default class TodoItem extends Component {
     render() {
+        const { title, handleDeleteItem, handleEdit } = this.props
         return (
-            <li className="list-group-item justify-content-between my-3 d-flex">
-                <h6>Title</h6>
+            <li className="list-group-item rounded border justify-content-between d-flex my-2">
+                <h6> {title} </h6>
                 <div className="todo-icon">
-                    <a className="mx-2 text-success" href="#"><span>Edit</span></a>
-                    <a className="mx-2 text-danger" href="#"><span>Delete</span></a>
+                    <span className="mx-2 text-success" onClick={handleEdit}>Edit</span>
+                    <span onClick={handleDeleteItem} className="mx-2 text-danger">Delete</span>
                 </div>
             </li>
         )

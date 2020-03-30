@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class TodoInput extends Component {
     render() {
-        const { item, onChangeHandler, submitHandler } = this.props
+        const { item, onChangeHandler, submitHandler, editItem } = this.props
         return (
             <div className="col-10 col-md-8 offset-md-1 mx-auto">
                 <div className="card mt-5">
@@ -12,7 +12,13 @@ export default class TodoInput extends Component {
                                 value={item}
                                 onChange={onChangeHandler} />
                         </div>
-                        <input type="submit" value="Add Item" className="btn btn-info btn-block" />
+                        <button className={
+                            editItem ? "btn btn-success btn-block" : "btn btn-info btn-block"
+                        }>
+                            {
+                                editItem ? 'Edit Item' : 'Add Item'
+                            }
+                        </button>
                     </form>
                 </div>
             </div>

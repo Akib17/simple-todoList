@@ -1,52 +1,76 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import TodoInput from './Components/TodoInput';
 import TodoList from './Components/TodoList';
-import ReactDom from 'react-router-dom'
-import uuid from 'uuid'
+import uuid from 'uuid/v4'
 
-function App() {
-  const [items, setItems] = useState({
-    items: [],
-    id: uuid(),
-    item: '',
-    editItem: false
-  })
-  const onChangeHandler = e => {
-    setItems({
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      items: [],
+      id: uuid(),
+      item: '',
+      editItem: false
+    }
+  }
+  onChangeHandler = e => {
+    this.setState({
       item: e.target.value
     })
   }
-  const submitHandler = (e) => {
+  submitHandler = (e) => {
     e.preventDefault()
 
     const newItem = {
-      item: items.item,
-      id: items.id
+      title: this.state.item,
+      id: this.state.id
     }
 
-    const updateItem = [...items.items, newItem]
-    setItems({
-      items: updateItem,
+    const updateItems = [...this.state.items, newItem]
+    this.setState({
       item: '',
-      id: '',
+      id: uuid(),
+      items: updateItems,
       editItem: false
     })
-    
   }
-  return (
-    <div className="container">
-      <div className="row">
-        <TodoInput
-          item={items.item}
-          onChangeHandler={onChangeHandler}
-          submitHandler={submitHandler}
-        />
-        <TodoList></TodoList>
+  clearList = () => {
+    this.setState({
+      items: []
+    })
+  }
+  handleDeleteItem = (id) => {
+    const filterItems = this.state.items.filter(item => item.id !== id)
+    this.setState({
+      items: filterItems
+    })
+  }
+  handleEdit = id => {
+    const filterItems = this.state.items.filter(item => item.id !== id)
+    const selectedItem = this.state.items.find(item => item.id === id)
+    this.setState({
+      items: filterItems,
+      item: selectedItem.title,
+      editItem: true
+    })
+  }
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <TodoInput
+            editItem={this.state.editItem}
+            item={this.state.item}
+            onChangeHandler={this.onChangeHandler}
+            submitHandler={this.submitHandler}
+          />
+          <TodoList handleDeleteItem={this.handleDeleteItem} clearList={this.clearList} items={this.state.items} handleEdit={this.handleEdit}></TodoList>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
