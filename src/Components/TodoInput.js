@@ -5,8 +5,9 @@ export default class TodoInput extends Component {
         const { item, onChangeHandler, submitHandler, editItem } = this.props
         return (
             <div className="col-10 col-md-8 offset-md-1 mx-auto">
-                <div className="card mt-5">
-                    <form className="p-3" onSubmit={submitHandler}>
+            <h3 className="text-center my-4">Add your Tasks</h3>
+                <div className="card">
+                    <form className="p-5" onSubmit={submitHandler}>
                         <div className="form-group">
                             <input type="text" className="form-control" placeholder="Add a Item"
                                 value={item}

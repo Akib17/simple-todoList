@@ -9,7 +9,9 @@ export default class TodoList extends Component {
         return (
             <div className="col-10 col-md-8 offset-md-1 mx-auto text-center">
                 <div className="list-group my-4">
-                    <h2>ToDo List</h2>
+                    {
+                        listItems.length > 0 ? <h2>ToDo List</h2> : ' '
+                    }
                     {
                         listItems.map(item => {
                             return (
@@ -21,9 +23,12 @@ export default class TodoList extends Component {
                             )
                         })
                     }
-                    <button onClick={clearList} className="btn btn-danger mt-3">
-                        Clear List
-                </button>
+
+                    {
+                        listItems.length > 0 ? <button onClick={clearList} className="btn btn-danger mt-3">
+                            Clear List
+                        </button> : ' '
+                    }
                 </div>
             </div>
         )
