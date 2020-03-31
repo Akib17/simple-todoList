@@ -10,15 +10,16 @@ export default class TodoList extends Component {
             <div className="col-10 col-md-8 offset-md-1 mx-auto text-center">
                 <div className="list-group my-4">
                     {
-                        listItems.length > 0 ? <h2>ToDo List</h2> : ' '
+                        listItems.length > 0 ? <h2>ToDo List <div className="badge badge-dark">{listItems.length}</div> </h2> : ' '
                     }
                     {
-                        listItems.map(item => {
+                        listItems.map((item, ind) => {
                             return (
                                 <TodoItem
                                     handleDeleteItem={() => handleDeleteItem(item.id)}
                                     handleEdit={() => handleEdit(item.id)}
                                     key={item.id}
+                                    index={ind}
                                     title={item.title}></TodoItem>
                             )
                         })
